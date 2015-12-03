@@ -25,6 +25,18 @@ string removeChar(string s, int id)
 	return f;
 }
 
+int findMinRep(int alpha[])
+{
+	int min_rep = 99999;
+	for (int i = 0; i < 26; i++)
+	{
+		if (alpha[i] != 0 && alpha[i] < min_rep)
+			min_rep = alpha[i];
+	}
+	return min_rep;
+}
+
+
 long long permutation(long long n, int alpha[])
 {
 	n = fact(n);
@@ -51,9 +63,10 @@ int main()
 	{
 
 		long long range = 0, num_rep = -1, check = 0, rep_count = 0;
+		int minrep = 0;
 		char ch;
 		long long fct = 0, Start = 0, End = 0, S = 0, E = 0, c = 0;
-		bool rep = false, re_af = false;
+		bool rep = false, re_af = false, check_nums = false;
 
 		int alpha[26] = { 0 };
 
@@ -103,7 +116,32 @@ int main()
 			check = 0;
 
 			if (!rep)
-				range = fct / str.size();
+			{
+				if ((fct%str.size()) != 0)
+				{
+					minrep = findMinRep(alpha);
+					int nums = 0;
+
+					for (int i = 0; i < 26; i++)
+					{
+						if (alpha[i] != 0)
+						{
+							if (alpha[i] == minrep)
+								nums++;
+							else
+							{
+								nums += (alpha[i] / minrep);
+							}
+						}
+					}
+
+					range = fct / nums;
+					check_nums = true;
+				}
+				else
+					range = fct / str.size();
+			}
+				
 			else
 				range = fct / rep_count;
 
@@ -136,6 +174,7 @@ int main()
 					num_rep = -1;
 					rep_count = 0;
 					rep = false;
+					check_nums = false;
 					break;
 				}
 				else
@@ -143,7 +182,15 @@ int main()
 					S = E + 1;
 
 					if (!rep)
-						id++;
+					{
+						if (check_nums)
+						{
+							id += minrep;
+						}
+						else
+							id++;
+					}
+						
 					else
 						id += num_rep;
 
@@ -160,7 +207,8 @@ int main()
 		if (range != 0 && str.size() == 1)
 			final += str;
 		//cout << endl << ": " << final << endl;
-		cout << final << endl;
+		if (range != 0)
+			cout << final << endl;
 		str = ""; final = "";
 		K = 0;
 		//cout << "Enter anagram and order : ";
@@ -168,8 +216,6 @@ int main()
 		cin >> K;
 		K--;
 	}
-
-
 	return 0;
 }
 
