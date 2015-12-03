@@ -13,11 +13,13 @@ anagram.cpp identifies in which range does K falls and finds the corresponding l
 The range keeps decreasing as each letters is identified. 
 This reduces the search space from n to logn, where n is the permutation of the given string.
 
-The range is calculated based on 2 conditions.
-case 1: number of time a letter1 appears in the string is same as the number of time a letter2 appears in the same string
+The range is calculated based on 3 conditions.
+case 1: number of time letter-1 appears in the string is same as the number of time letter-2 appears in the same string
         Eg: ABCABCABC 
 case 2: number of occurance of each letter is different. 
         Eg: AACCCPP
+case 3: number of occurance of each letter is different and permuataion of the string mod number of letters in string is not zero
+        Eg: AAAABB
 
 Working:
 string: AMC
